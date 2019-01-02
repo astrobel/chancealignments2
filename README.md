@@ -8,8 +8,6 @@ Updated version of https://github.com/astrobel/chancealignments, now in Python 3
 * astropy
 * lightkurve
 
-To run 5_comparison.py, it is suggested that you create separate directories for each target analysed
-
 ## Main files
 
 ### 1_smoothing.py
