@@ -17,7 +17,7 @@ mpl.rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 mpl.rcParams['ps.useafm'] = True
 mpl.rcParams['pdf.use14corefonts'] = True
 
-parser = argparse.ArgumentParser(description='Prepare long cadence light curve for further analysis.')
+parser = argparse.ArgumentParser(description='Lomb-Scargle periodogram of light curve.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
 parser.add_argument('-o', '--oversampling', dest='over', default=5, type=int, help='LSP oversampling factor')
 parser.add_argument('-n', '--nyqistfactor', dest='nyq', default=1, type=int, help='LSP Nyquist factor')
