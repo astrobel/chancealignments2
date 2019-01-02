@@ -24,8 +24,8 @@ mpl.rcParams['pdf.use14corefonts'] = True
 
 parser = argparse.ArgumentParser(description='Prepare long cadence light curve for further analysis.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
-parser.add_argument('-s', '--smoothing', dest='kern', default=100, type=int, help='Gaussian smoothing kernel')
-parser.add_argument('-c', '--clip', dest='inp', default=3, type=int, help='Outlier clipping level')
+parser.add_argument('-s', '--smoothing', dest='kern', default=100, type=int, help='Gaussian smoothing kernel, in days')
+parser.add_argument('-c', '--clip', dest='inp', default=3, type=int, help='Outlier clipping level, in sigma')
 parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help='Show plots?')
 
 params = parser.parse_args()
