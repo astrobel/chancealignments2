@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from lightkurve import KeplerLightCurveFile
 import nancleaner as nc
 import quarters as qs
-import argparse, os, warnings, sys
+import argparse, os, warnings
 
 warnings.simplefilter('ignore', category=UserWarning) # for font conflicts on my system, at least
 
@@ -72,7 +72,7 @@ discarded_time = []
 
 # smoothed data
 
-plt.figure(2)
+plt.figure(1)
 
 plt.xlabel('Time (d)')
 plt.ylabel('Fractional Intensity')
