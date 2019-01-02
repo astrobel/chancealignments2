@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser(description='Prepare long cadence light curve f
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
 parser.add_argument('-f', '--foldfreq', dest='fold', default=None, type=float, help='Frequency for phase folding in microHertz')
 parser.add_argument('-o', '--oversampling', dest='over', default=5, type=int, help='LSP oversampling factor')
-parser.add_argument('-n', '--nyqistfactor', dest='nyq', default=1, type=int, help='LSP Nyquist factor')
+parser.add_argument('-n', '--nyqistfactor', dest='nyq', default=1, type=float, help='LSP Nyquist factor')
 parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help='Show plots?')
 
 params = parser.parse_args()
