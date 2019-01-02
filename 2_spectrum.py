@@ -20,7 +20,7 @@ mpl.rcParams['pdf.use14corefonts'] = True
 parser = argparse.ArgumentParser(description='Lomb-Scargle periodogram of light curve.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
 parser.add_argument('-o', '--oversampling', dest='over', default=5, type=int, help='LSP oversampling factor')
-parser.add_argument('-n', '--nyqistfactor', dest='nyq', default=1, type=float, help='LSP Nyquist factor')
+parser.add_argument('-n', '--nyquistfactor', dest='nyq', default=1, type=float, help='LSP Nyquist factor')
 parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help='Show plots?')
 
 params = parser.parse_args()
