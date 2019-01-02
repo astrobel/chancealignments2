@@ -2,7 +2,7 @@ import numpy as np
 from astropy.stats import LombScargle
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import argparse, warnings, os, sys
+import argparse, warnings, os
 
 warnings.simplefilter('ignore', category=UserWarning) # for font conflicts on my system, at least
 
