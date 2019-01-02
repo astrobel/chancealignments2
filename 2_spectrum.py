@@ -28,13 +28,13 @@ params = parser.parse_args()
 # read in light curve
 while True:
    try:
-      importblend = np.loadtxt(f'kic{params.kic}_lc.dat')
+      lc = np.loadtxt(f'kic{params.kic}_lc.dat')
       break
    except OSError:
       print('Wrong KIC number? Or try running 1_smoothing.py first!')
       sys.exit()
-clipped_time = importblend[:,0]
-clipped_flux = importblend[:,1]
+clipped_time = lc[:,0]
+clipped_flux = lc[:,1]
 
 # fourier transform
 
