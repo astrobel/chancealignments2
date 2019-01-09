@@ -30,13 +30,14 @@ parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help
 
 params = parser.parse_args()
 
-quarterlist = qs.getallquarters(params.kic)
+kic = params.kic
+quarterlist = qs.getallquarters(kic)
 
 time = np.zeros(0)
 sap_flux = np.zeros(0)
 
 for q in quarterlist:
-   lc = KeplerLightCurveFile.from_archive(params.kic, quarter=q)
+   lc = KeplerLightCurveFile.from_archive(kic, quarter=q)
 
    table = lc.hdu[1].data
 
@@ -76,7 +77,7 @@ plt.figure(1)
 
 plt.xlabel('Time (d)')
 plt.ylabel('Fractional Intensity')
-plt.title(f'{params.kic}')
+plt.title(f'{kic}')
 
 clipped_flux = [sap_flux[i] for i in range(len(colours)) if colours[i] == 1]
 clipped_time = [time[i] for i in range(len(colours)) if colours[i] == 1]
@@ -85,12 +86,12 @@ discarded_time = [time[i] for i in range(len(colours)) if colours[i] == 0]
 
 plt.plot(discarded_time, discarded_flux, 'kx', alpha=0.1, markersize=3)
 plt.plot(clipped_time, clipped_flux, 'ko', markersize=1)
-plt.savefig(f'kic{params.kic}_smooth.png')
+plt.savefig(f'kic{kic}_smooth.png')
 
 # export smoothed and clipped data as .dat file
 exportblend = np.array([clipped_time, clipped_flux])
 exportblend = np.transpose(exportblend)
-np.savetxt(f'kic{params.kic}_lc.dat', exportblend, delimiter=' ', header=f'Smoothed and clipped light curve for KIC{params.kic}')
+np.savetxt(f'kic{kic}_lc.dat', exportblend, delimiter=' ', header=f'Smoothed and clipped light curve for KIC{kic}')
 
 if params.show == True:
    plt.show()

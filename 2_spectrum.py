@@ -25,10 +25,12 @@ parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help
 
 params = parser.parse_args()
 
+kic = params.kic
+
 # read in light curve
 while True:
    try:
-      lc = np.loadtxt(f'kic{params.kic}_lc.dat')
+      lc = np.loadtxt(f'kic{kic}_lc.dat')
       break
    except OSError:
       print('Wrong KIC number? Or try running 1_smoothing.py first!')
@@ -56,7 +58,7 @@ pslog.set_xlim(1, max(frequencies))
 pslog.set_ylabel('Amplitude (ppm)')
 pslog.set_xscale('log')
 pslog.set_yscale('log')
-pslog.set_title(f'{params.kic}')
+pslog.set_title(f'{kic}')
 
 pslin.plot(frequencies, power_spectrum, 'k-', lw=0.5)
 pslin.set_xlim(1, max(frequencies))
@@ -65,7 +67,7 @@ pslin.set_xlabel('Frequency ($\mu$Hz)')
 pslin.set_ylabel('Amplitude (ppm)')
 
 plt.tight_layout()
-fig1.savefig(f'kic{params.kic}_spectrum.png')
+fig1.savefig(f'kic{kic}_spectrum.png')
 
 if params.show == True:
    plt.show()

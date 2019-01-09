@@ -39,10 +39,11 @@ parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help
 params = parser.parse_args()
 
 q = params.quarter
+kic = params.kic
 
 # flag for quarter of choice
 
-tpf = KeplerTargetPixelFile.from_archive(params.kic, quarter=q)
+tpf = KeplerTargetPixelFile.from_archive(kic, quarter=q)
 
 channel = tpf.channel
 obj_ra = tpf.ra
@@ -110,7 +111,7 @@ for (j, k), img in np.ndenumerate(table2):
       if params.export == True:
          exportblend = np.array([clipped_time, clipped_flux])
          exportblend = np.transpose(exportblend)
-         np.savetxt(f'kic{params.kic}_pixel{index+1}_lc.dat', exportblend, delimiter=' ', header=f'Smoothed and clipped light curve for KIC{params.kic} TPF')
+         np.savetxt(f'kic{kic}_pixel{index+1}_lc.dat', exportblend, delimiter=' ', header=f'Smoothed and clipped light curve for KIC{kic} TPF')
       else:
          pass
 
@@ -136,7 +137,7 @@ for (j, k), img in np.ndenumerate(table2):
 # light curves
 fig = plt.figure(1)
 gs = gridspec.GridSpec(y, x, wspace=0, hspace=0)
-plt.title(f'{params.kic}')
+plt.title(f'{kic}')
 plt.xlabel('Time (d)')
 plt.ylabel('Fractional Intensity')
 
@@ -174,17 +175,17 @@ for (j, k), img in np.ndenumerate(table2):
          plt.ylim(min(flux), max(flux)) #ymin=0)
          plt.xlim(min(time), max(time))
 
-plt.savefig(f'kic{params.kic}_pixelslc.png')
+plt.savefig(f'kic{kic}_pixelslc.png')
 
 if params.makepdf == True:
-   outplot = pdf(f'kic{params.kic}_q{q}.pdf')
+   outplot = pdf(f'kic{kic}_q{q}.pdf')
 else:
    pass
 
 # power spectra
 fig = plt.figure(2)
 gs = gridspec.GridSpec(y, x, wspace=0, hspace=0)
-plt.title(f'{params.kic}')
+plt.title(f'{kic}')
 plt.xlabel('Frequency ($\mu$Hz)')
 plt.ylabel('Amplitude (ppm)')
 
@@ -223,13 +224,13 @@ for (j, k), img in np.ndenumerate(table2):
          plt.xlim(0, max(freq))
 
 fig.set_size_inches(14,10)
-plt.savefig(f'kic{params.kic}_pixels.png')
+plt.savefig(f'kic{kic}_pixels.png')
 
 if params.makepdf == True:
    # power spectra 2
    fig = plt.figure(3)
    gs = gridspec.GridSpec(y, x, wspace=0, hspace=0)
-   plt.title(f'{params.kic}')
+   plt.title(f'{kic}')
    plt.xlabel('Frequency ($\mu$Hz)')
    plt.ylabel('Amplitude (ppm)')
 

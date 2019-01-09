@@ -30,10 +30,12 @@ parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help
 
 params = parser.parse_args()
 
+kic = params.kic
+
 # read in light curve
 while True:
    try:
-      lc = np.loadtxt(f'kic{params.kic}_lc.dat')
+      lc = np.loadtxt(f'kic{kic}_lc.dat')
       break
    except OSError:
       print('Wrong KIC number? Or try running 1_smoothing.py first!')
@@ -101,8 +103,8 @@ plt.plot(finaltimes[1]+1, finalampls, 'ko', markersize=2)
 plt.xlim(0, max(finaltimes2[1]+1))
 plt.xlabel(f'Normalised Time mod {foldper:.2} days')
 plt.ylabel('Fractional Intensity')
-plt.title(f'{params.kic}')
-plt.savefig(f'kic{params.kic}_phase.png')
+plt.title(f'{kic}')
+plt.savefig(f'kic{kic}_phase.png')
 
 if params.show == True:
    plt.show()
