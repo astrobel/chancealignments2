@@ -22,19 +22,19 @@ def getquarter(kic):
    
    quarterlist = getallquarters(kic)
 
-   repquarter = 18 # placeholder, since there is 0 but there is no 18
-   while repquarter not in quarterlist:
+   q = 18 # placeholder, since there is 0 but there is no 18
+   while q not in quarterlist:
       while True:
          try:
-            repquarter = int(input('--> Which quarter? (0-17) '))
+            q = int(input('--> Which quarter? (0-17) '))
             break
          except ValueError:
             print('--> Please enter an integer')
-      if repquarter in quarterlist:
+      if q in quarterlist:
          break
       else:
          print('--> No data for this quarter')
          continue
    print(' ')
 
-   return repquarter
+   return q
