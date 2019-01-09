@@ -23,7 +23,7 @@ mpl.rcParams['text.latex.preamble'] = [
 
 parser = argparse.ArgumentParser(description='Prepare long cadence light curve for further analysis.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
-parser.add_argument('-q', '--quarter', required=True, type=int, choices=range(1,18), help='Quarter to analyse')
+parser.add_argument('-q', '--quarter', required=True, type=int, choices=range(0,18), help='Quarter to analyse')
 parser.add_argument('-u', '--ukirt', required=True, type=str, help='UKIRT image file string, including fits extension')
 parser.add_argument('-r', '--refpix', default=False, type=bool, help='Plot location of reference pixel on image?')
 parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help='Show plots?')
