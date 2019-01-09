@@ -50,7 +50,6 @@ Arguments:
 * `-q --quarter`: Quarter to analyse, required, takes integer between 0 and 17
 * `-s --smoothing`: Gaussian smoothing kernel, default 100 days, takes integer
 * `-c --clip`: Outlier clipping level, default 3 sigma, takes integer
-* `-f --foldfreq`: Frequency for phase folding, in &mu;Hertz, default None runs code on highest-amplitude frequency, takes float
 * `-o --oversampling`: LSP oversampling factor, default 5, takes integer
 * `-n --nyquistfactor`: LSP Nyquist factor, default 1, takes float
 * `-m --makepdf`: Option to create PDF that shows a close-up of the light curve and amplitude spectrum for each individual pixel, including a numbered plot at the beginning to identify each pixel, default False, takes bool
