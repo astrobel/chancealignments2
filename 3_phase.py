@@ -5,7 +5,7 @@ from astropy.io import fits as pyfits
 from astropy.convolution import convolve, Box1DKernel, Gaussian1DKernel
 from astropy.stats import LombScargle
 import translate as tr
-import argparse, warnings, os
+import argparse, warnings
 
 warnings.simplefilter('ignore', category=UserWarning) # for font conflicts on my system, at least
 warnings.simplefilter('ignore', category=RuntimeWarning) # may encounter some divide by zeros in process

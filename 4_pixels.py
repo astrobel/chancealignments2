@@ -9,7 +9,7 @@ from lightkurve import KeplerTargetPixelFile
 import nancleaner as nc
 import quarters as qs
 from matplotlib.backends.backend_pdf import PdfPages as pdf
-import argparse, warnings, os
+import argparse, warnings
 
 warnings.simplefilter('ignore', category=UserWarning) # for font conflicts on my system, at least
 

@@ -7,7 +7,7 @@ import matplotlib as mpl
 from matplotlib.colors import LogNorm
 from lightkurve import KeplerTargetPixelFile
 import quarters as qs
-import argparse, os, warnings
+import argparse, warnings
 
 warnings.simplefilter('ignore', category=AstropyWarning)
 warnings.simplefilter('ignore', category=UserWarning) # for font conflicts on my system, at least
