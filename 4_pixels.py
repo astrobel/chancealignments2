@@ -174,7 +174,7 @@ for (j, k), img in np.ndenumerate(table2):
          plt.ylim(min(flux), max(flux)) #ymin=0)
          plt.xlim(min(time), max(time))
 
-plt.savefig(f'kic{kic}_pixelslc.png')
+plt.savefig(f'kic{kic}q{q}pixelslc.png')
 
 if params.makepdf == True:
    outplot = pdf(f'kic{kic}_q{q}.pdf')
@@ -223,7 +223,7 @@ for (j, k), img in np.ndenumerate(table2):
          plt.xlim(0, max(freq))
 
 fig.set_size_inches(14,10)
-plt.savefig(f'kic{kic}_pixels.png')
+plt.savefig(f'kic{kic}q{q}pixels.png')
 
 if params.makepdf == True:
    # power spectra 2
