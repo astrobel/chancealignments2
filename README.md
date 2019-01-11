@@ -1,5 +1,5 @@
 # chancealignments2
-Updated version of https://github.com/astrobel/chancealignments, now in Python 3!
+Updated version of https://github.com/astrobel/chancealignments, now in Python 3! This collection of scripts is a fully-automated pipeline for close inspection of Kepler long cadence data and target pixel files, aimed at aiding the identification of chance alignments.
 
 ## Requirements
 
