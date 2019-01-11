@@ -24,7 +24,7 @@ mpl.rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 mpl.rcParams['ps.useafm'] = True
 mpl.rcParams['pdf.use14corefonts'] = True
 
-parser = argparse.ArgumentParser(description='Prepare long cadence light curve for further analysis.')
+parser = argparse.ArgumentParser(description='Examine light curves and amplitude spectra of each individual pixel.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
 parser.add_argument('-q', '--quarter', required=True, type=int, choices=range(0,18), help='Quarter to analyse')
 parser.add_argument('-s', '--smoothing', dest='kern', default=100, type=int, help='Gaussian smoothing kernel, in days')
