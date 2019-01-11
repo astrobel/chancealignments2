@@ -21,7 +21,7 @@ mpl.rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 mpl.rcParams['ps.useafm'] = True
 mpl.rcParams['pdf.use14corefonts'] = True
 
-parser = argparse.ArgumentParser(description='Prepare long cadence light curve for further analysis.')
+parser = argparse.ArgumentParser(description='Phase light curve on highest-amplitude frequency, or given frequency.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
 parser.add_argument('-f', '--foldfreq', dest='fold', default=None, type=float, help='Frequency for phase folding in microHertz')
 parser.add_argument('-o', '--oversampling', dest='over', default=5, type=int, help='LSP oversampling factor')
