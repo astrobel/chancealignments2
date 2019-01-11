@@ -28,7 +28,7 @@ mpl.rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 mpl.rcParams['ps.useafm'] = True
 mpl.rcParams['pdf.use14corefonts'] = True
 
-parser = argparse.ArgumentParser(description='Prepare long cadence light curve for further analysis.')
+parser = argparse.ArgumentParser(description='Perform difference imaging on target.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
 parser.add_argument('-q', '--quarter', required=True, type=int, choices=range(0,18), help='Quarter to analyse')
 parser.add_argument('-f', '--foldfreq', dest='fold', default=None, type=float, help='Frequency for phase folding in microHertz')
