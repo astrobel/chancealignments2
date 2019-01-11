@@ -21,7 +21,7 @@ mpl.rcParams['text.latex.preamble'] = [
 
 # to add: flag for filename of ukirt image; flag for quarter of choice
 
-parser = argparse.ArgumentParser(description='Prepare long cadence light curve for further analysis.')
+parser = argparse.ArgumentParser(description='Compare Kepler image to UKIRT image of same target. UKIRT image must be downloaded separately by user.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
 parser.add_argument('-q', '--quarter', required=True, type=int, choices=range(0,18), help='Quarter to analyse')
 parser.add_argument('-u', '--ukirt', required=True, type=str, help='UKIRT image file string, including fits extension')
