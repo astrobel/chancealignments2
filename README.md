@@ -45,7 +45,7 @@ Arguments:
 
 ### 4_pixels.py
 
-Examines light curves and amplitude spectra in each individual pixel for a given quarter.
+Examines light curves and amplitude spectra in each individual pixel for a given quarter. Code will exit if there is no data for chosen quarter.
 
 Arguments:
 * `-k --kic`: KIC ID, required, takes integer
@@ -60,7 +60,7 @@ Arguments:
 
 ### 5_comparison.py
 
-Plots a side-by-side comparison of pixel image for one quarter and a 1' UKIRT image of the same area, the latter of which must be downloaded by the user.
+Plots a side-by-side comparison of pixel image for one quarter and a 1' UKIRT image of the same area, the latter of which must be downloaded by the user. Code will exit if there is no data for chosen quarter.
 
 Arguments:
 * `-k --kic`: KIC ID, required, takes integer
@@ -71,7 +71,7 @@ Arguments:
 
 ### 6_difference.py
 
-Performs difference imaging on a given quarter, to find the pixel source of a signal. `1_lightcurve.py` _must_ be run first.
+Performs difference imaging on a given quarter, to find the pixel source of a signal. `1_lightcurve.py` _must_ be run first. Code will exit if there is no data for chosen quarter.
 
 This code uses only time series data which falls within 5% (`tolerance` variable) either side of the peak and trough of the phase-folded light curve, or 20% of the light curve in total. Trough points are subtracted from peak points for each individual pixel and an average is taken to create the difference image. The plot returned is a side-by-side comparison of an average of all unaltered frames and the difference image.
 
@@ -88,6 +88,5 @@ Arguments:
 
 * nancleaner.py: module to remove NaN values from both SAP and TPF light curve data.
 * outliers.py: module to handle clipping of outliers given a sigma value for bounding.
-* quarters.py: module to fetch the availability of a quarter for a given target, or a list of all available quarters for that target.
 * smoothing.py: contains functions which perform the convolution of a Gaussian, boxcar, or polynomial kernel with time series data, and then divides the time series by the fit to normalise. Only Gaussian smoothing is used by the code, but the other functions are included for use at the user's discretion.
 * translate.py: module to translate a time series from one range to another, used to normalise time series in `3_phase.py`.
