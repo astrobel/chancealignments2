@@ -4,12 +4,12 @@ import smoothing
 import matplotlib.gridspec as gridspec
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from lightkurve import KeplerLightCurveFile
+from lightkurve import search_lightcurvefile, LightkurveWarning
 import nancleaner as nc
-import quarters as qs
 import argparse, warnings
 
 warnings.simplefilter('ignore', category=UserWarning) # for font conflicts on my system, at least
+warnings.simplefilter('ignore', category=LightkurveWarning) # if it's trying to download an empty quarter, this will be skipped in code
 
 mpl.rc('text', usetex=True)
 mpl.rcParams['text.latex.preamble'] = [
@@ -31,27 +31,28 @@ parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help
 params = parser.parse_args()
 
 kic = params.kic
-quarterlist = qs.getallquarters(kic)
 
 time = np.zeros(0)
 sap_flux = np.zeros(0)
 
-for q in quarterlist:
-   lc = KeplerLightCurveFile.from_archive(kic, quarter=q)
+for q in np.arange(0,18):
 
-   table = lc.hdu[1].data
-
-   sap_flux_temp = table['SAP_FLUX']
-   time_temp = table['TIME']
-
-   sap_flux_1, time_1 = nc.nancleaner2d(sap_flux_temp, time_temp)
-
-   sap_flux_2, smth_flux = smoothing.gausssmooth(time_1, sap_flux_1, params.kern)
-
-   time = np.append(time, time_1)
-   sap_flux = np.append(sap_flux, sap_flux_2)
+   lc = search_lightcurvefile(kic, quarter=q).download()
    
-   continue
+   if lc != None:
+      table = lc.hdu[1].data
+
+      sap_flux_temp = table['SAP_FLUX']
+      time_temp = table['TIME']
+
+      sap_flux_1, time_1 = nc.nancleaner2d(sap_flux_temp, time_temp)
+
+      sap_flux_2, smth_flux = smoothing.gausssmooth(time_1, sap_flux_1, params.kern)
+
+      time = np.append(time, time_1)
+      sap_flux = np.append(sap_flux, sap_flux_2)
+      
+      continue
 
 # scan for outliers
 clip = params.inp * np.std(sap_flux)

@@ -5,13 +5,13 @@ import smoothing
 import matplotlib.gridspec as gridspec
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from lightkurve import KeplerTargetPixelFile
+from lightkurve import search_targetpixelfile, LightkurveWarning
 import nancleaner as nc
-import quarters as qs
 from matplotlib.backends.backend_pdf import PdfPages as pdf
-import argparse, warnings
+import argparse, warnings, sys
 
 warnings.simplefilter('ignore', category=UserWarning) # for font conflicts on my system, at least
+warnings.simplefilter('ignore', category=LightkurveWarning) # if it's trying to download an empty quarter, code will quit
 
 mpl.rc('text', usetex=True)
 mpl.rcParams['text.latex.preamble'] = [
@@ -40,9 +40,13 @@ params = parser.parse_args()
 q = params.quarter
 kic = params.kic
 
-# flag for quarter of choice
-
-tpf = KeplerTargetPixelFile.from_archive(kic, quarter=q)
+while True:
+   tpf = search_targetpixelfile(kic, quarter=q).download()
+   if tpf == None:
+      print('No data for this quarter.')
+      sys.exit()
+   else:
+      break
 
 channel = tpf.channel
 obj_ra = tpf.ra
@@ -222,7 +226,7 @@ for (j, k), img in np.ndenumerate(table2):
          plt.ylim(0, max(ps)) #ymin=0)
          plt.xlim(0, max(freq))
 
-fig.set_size_inches(14,10)
+# fig.set_size_inches(14,10) # for clarity, but disabled for quick look run of code
 plt.savefig(f'kic{kic}q{q}pixels.png')
 
 if params.makepdf == True:

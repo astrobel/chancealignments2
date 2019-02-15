@@ -5,12 +5,12 @@ from astropy.utils.exceptions import AstropyWarning
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib.colors import LogNorm
-from lightkurve import KeplerTargetPixelFile
-import quarters as qs
-import argparse, warnings
+from lightkurve import search_targetpixelfile, LightkurveWarning
+import argparse, warnings, sys
 
 warnings.simplefilter('ignore', category=AstropyWarning)
 warnings.simplefilter('ignore', category=UserWarning) # for font conflicts on my system, at least
+warnings.simplefilter('ignore', category=LightkurveWarning) # if it's trying to download an empty quarter, code will quit
 
 mpl.rc('text', usetex=True)
 mpl.rcParams['text.latex.preamble'] = [
@@ -18,8 +18,6 @@ mpl.rcParams['text.latex.preamble'] = [
       r'\usepackage[EULERGREEK]{sansmath}',
       r'\sansmath'
 ]
-
-# to add: flag for filename of ukirt image; flag for quarter of choice
 
 parser = argparse.ArgumentParser(description='Compare Kepler image to UKIRT image of same target. UKIRT image must be downloaded separately by user.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
@@ -35,7 +33,13 @@ kic = params.kic
 
 ### IMAGE 1: ONE KEPLER PIXEL IMAGE, Q_ ###
 
-tpf = KeplerTargetPixelFile.from_archive(kic, quarter=q)
+while True:
+   tpf = search_targetpixelfile(kic, quarter=q).download()
+   if tpf == None:
+      print('No data for this quarter.')
+      sys.exit()
+   else:
+      break
 
 channel = tpf.channel
 obj_ra = tpf.ra

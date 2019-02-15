@@ -6,16 +6,16 @@ from astropy import wcs
 from astropy.convolution import convolve, Box1DKernel, Gaussian1DKernel
 from astropy.utils.exceptions import AstropyWarning
 from astropy.stats import LombScargle
-from lightkurve import KeplerTargetPixelFile
+from lightkurve import search_targetpixelfile, LightkurveWarning
 import smoothing
 import translate as tr
-import quarters as qs
 import nancleaner as nc
-import argparse, warnings
+import argparse, warnings, sys
 
 warnings.simplefilter('ignore', category=AstropyWarning)
 warnings.simplefilter('ignore', category=UserWarning) # for font conflicts on my system, at least
 warnings.simplefilter('ignore', category=RuntimeWarning) # may encounter some divide by zeros in process
+warnings.simplefilter('ignore', category=LightkurveWarning) # if it's trying to download an empty quarter, code will quit
 
 mpl.rc('text', usetex=True)
 mpl.rcParams['text.latex.preamble'] = [
@@ -42,7 +42,13 @@ params = parser.parse_args()
 q = params.quarter
 kic = params.kic
 
-tpf = KeplerTargetPixelFile.from_archive(kic, quarter=q)
+while True:
+   tpf = search_targetpixelfile(kic, quarter=q).download()
+   if tpf == None:
+      print('No data for this quarter.')
+      sys.exit()
+   else:
+      break
 
 channel = tpf.channel
 obj_ra = tpf.ra
