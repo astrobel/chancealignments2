@@ -84,6 +84,16 @@ Arguments:
 * `-r --refpix`: Plot reference pixel location from FITS header info on Kepler image, default False, takes bool
 * `-p --plots`: Show plots, default False, takes bool
 
+### 7_regionmap.py - NEW!
+
+Maps Gaia DR2 sources to a given quarter's TPF postage stamp, and lists sources for easy identification. Code will exit if there is no data for chosen quarter.
+
+Arguments:
+* `-k --kic`: KIC ID, required, takes integer
+* `-q --quarter`: Quarter to analyse, required, takes integer between 0 and 17
+* `-s --sourceprint`: Print Gaia DR2 sources to console, default False, takes bool
+* `-p --plots`: Show plots, default False, takes bool
+
 ## Auxiliary files
 
 * nancleaner.py: module to remove NaN values from both SAP and TPF light curve data.
