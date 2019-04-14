@@ -21,6 +21,7 @@ parser = argparse.ArgumentParser(description='Lomb-Scargle periodogram of light 
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
 parser.add_argument('-o', '--oversampling', dest='over', default=5, type=int, help='LSP oversampling factor')
 parser.add_argument('-n', '--nyquistfactor', dest='nyq', default=1, type=float, help='LSP Nyquist factor')
+parser.add_argument('-c', '--cpd', default=False, type=bool, help='Use cycles per day instead of microhertz in plot?')
 parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help='Show plots?')
 
 params = parser.parse_args()
@@ -49,7 +50,8 @@ frequencies, power_spectrum = LombScargle(np.asarray(clipped_time), np.asarray(c
 power_spectrum = power_spectrum * 4 / len(clipped_time)
 power_spectrum = np.sqrt(power_spectrum)
 power_spectrum *= 1e6
-frequencies *= 11.57
+if params.cpd == False:
+   frequencies *= 11.57
 
 # logarithmic and linear power spectra
 fig1, (pslog, pslin) = plt.subplots(2, 1)
@@ -63,7 +65,10 @@ pslog.set_title(f'{kic}')
 pslin.plot(frequencies, power_spectrum, 'k-', lw=0.5)
 pslin.set_xlim(1, max(frequencies))
 pslin.set_ylim(ymin = 0)
-pslin.set_xlabel('Frequency ($\mu$Hz)')
+if params.cpd == False:
+   pslin.set_xlabel('Frequency ($\mu$Hz)')
+elif params.cpd == True:
+   pslin.set_xlabel('Frequency (cd)')
 pslin.set_ylabel('Amplitude (ppm)')
 
 plt.tight_layout()
