@@ -250,11 +250,11 @@ right.axes.get_yaxis().set_ticks([])
 
 if params.refpix == True:
    if eo == 1:
-      diffimg.plot((x - refx) - 0.5, (y - refy) - 0.5, '*', color='#0cb5ed', ms=10)
-      avgimg.plot((x - refx) - 0.5, (y - refy) - 0.5, '*', color='#0cb5ed', ms=10)
+      diffimg.plot(refx, y - refy - 1, '*', color='#0cb5ed', ms=10)
+      avgimg.plot(refx, y - refy - 1, '*', color='#0cb5ed', ms=10)
    elif eo == 0:
-      diffimg.plot(refx - 1.5, (y - refy) - 0.5, '*', color='#0cb5ed', ms=10)
-      avgimg.plot(refx - 1.5, (y - refy) - 0.5, '*', color='#0cb5ed', ms=10)
+      diffimg.plot(x - refx - 1, y - refy - 1, '*', color='#0cb5ed', ms=10)
+      avgimg.plot(x - refx - 1, y - refy - 1, '*', color='#0cb5ed', ms=10)
 
 plt.tight_layout()
 fig.set_size_inches(7.5, 4.5)

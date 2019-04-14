@@ -119,12 +119,12 @@ if params.refpix == True:
       print('--> Reference pixel:')
       print(f'-----> RA = {refra}')
       print(f'-----> DEC = {refdec}')
-      kepler.plot((x - refx) - 0.5, (y - refy) - 0.5, '*', color='#00ff8c', ms=10)
+      kepler.plot(refx, y - refy - 1, '*', color='#00ff8c', ms=10)
    elif eo == 0:
       print('--> Reference pixel:')
       print(f'-----> RA = {refra}')
       print(f'-----> DEC = {refdec}')
-      kepler.plot(refx - 1.5, (y - refy) - 0.5, '*', color='#00ff8c', ms=10)
+      kepler.plot(x - refx - 1, y - refy - 1, '*', color='#00ff8c', ms=10)
 else:
    pass
 
