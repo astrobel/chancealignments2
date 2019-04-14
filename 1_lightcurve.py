@@ -25,19 +25,21 @@ mpl.rcParams['pdf.use14corefonts'] = True
 parser = argparse.ArgumentParser(description='Prepare long cadence light curve for further analysis.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
 parser.add_argument('-s', '--smoothing', dest='kern', default=100, type=int, help='Gaussian smoothing kernel, in days')
-parser.add_argument('-c', '--clip', dest='inp', default=3, type=int, help='Outlier clipping level, in sigma')
+parser.add_argument('-o', '--outlierclip', dest='inp', default=3, type=int, help='Outlier clipping level, in sigma')
+parser.add_argument('-c', '--cadence', default='long', choices=['long', 'short'], type=str, help='Cadence of data to download')
 parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help='Show plots?')
 
 params = parser.parse_args()
 
 kic = params.kic
+cadence = params.cadence
 
 time = np.zeros(0)
 sap_flux = np.zeros(0)
 
 for q in np.arange(0,18):
 
-   lc = search_lightcurvefile(kic, quarter=q).download()
+   lc = search_lightcurvefile(kic, quarter=q, cadence=cadence).download()
    
    if lc != None:
       table = lc.hdu[1].data
@@ -87,12 +89,12 @@ discarded_time = [time[i] for i in range(len(colours)) if colours[i] == 0]
 
 plt.plot(discarded_time, discarded_flux, 'kx', alpha=0.1, markersize=3)
 plt.plot(clipped_time, clipped_flux, 'ko', markersize=1)
-plt.savefig(f'kic{kic}_smooth.png')
+plt.savefig(f'kic{kic}_lc_{cadence}.png')
 
 # export smoothed and clipped data as .dat file
 exportblend = np.array([clipped_time, clipped_flux])
 exportblend = np.transpose(exportblend)
-np.savetxt(f'kic{kic}_lc.dat', exportblend, delimiter=' ', header=f'Smoothed and clipped light curve for KIC{kic}')
+np.savetxt(f'kic{kic}_lc_{cadence}.dat', exportblend, delimiter=' ', header=f'Smoothed and clipped {cadence} cadence light curve for KIC{kic}')
 
 if params.show == True:
    plt.show()

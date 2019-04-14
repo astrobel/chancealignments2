@@ -23,7 +23,9 @@ mpl.rcParams['pdf.use14corefonts'] = True
 
 parser = argparse.ArgumentParser(description='Phase light curve on highest-amplitude frequency, or given frequency.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
-parser.add_argument('-f', '--foldfreq', dest='fold', default=None, type=float, help='Frequency for phase folding in microHertz')
+parser.add_argument('-c', '--cadence', default='long', choices=['long', 'short'], type=str, help='Cadence of data to use')
+parser.add_argument('-f', '--foldfreq', dest='fold', default=None, type=float, help='Frequency for phase folding in microHertz or cycles per day (use -u True)')
+parser.add_argument('-u', '--unitscpd', dest='cpd', default=False, type=bool, help='Use cycles per day instead of microhertz?')
 parser.add_argument('-o', '--oversampling', dest='over', default=5, type=int, help='LSP oversampling factor')
 parser.add_argument('-n', '--nyquistfactor', dest='nyq', default=1, type=float, help='LSP Nyquist factor')
 parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help='Show plots?')
@@ -31,11 +33,12 @@ parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help
 params = parser.parse_args()
 
 kic = params.kic
+cadence = params.cadence
 
 # read in light curve
 while True:
    try:
-      lc = np.loadtxt(f'kic{kic}_lc.dat')
+      lc = np.loadtxt(f'kic{kic}_lc_{cadence}.dat')
       break
    except OSError:
       print('Wrong KIC number? Or try running 1_smoothing.py first!')
@@ -59,7 +62,10 @@ if params.fold == None:
    foldfreq = frequencies[power_spectrum.argmax()]
 
 else:
-   foldfreq = params.fold
+   if params.cpd == False:
+      foldfreq = params.fold
+   elif params.cpd == True:
+      foldfreq = params.fold * 11.57
 
 tohz = foldfreq * 1e-6
 tos = 1/tohz
@@ -104,7 +110,7 @@ plt.xlim(0, max(finaltimes2[1]+1))
 plt.xlabel(f'Normalised Time mod {foldper:.2} days')
 plt.ylabel('Fractional Intensity')
 plt.title(f'{kic}')
-plt.savefig(f'kic{kic}_phase.png')
+plt.savefig(f'kic{kic}_phase_{cadence}.png')
 
 if params.show == True:
    plt.show()
