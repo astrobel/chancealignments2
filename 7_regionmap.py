@@ -31,6 +31,7 @@ mpl.rcParams['pdf.use14corefonts'] = True
 parser = argparse.ArgumentParser(description='Map out the region using Gaia DR2.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
 parser.add_argument('-q', '--quarter', required=True, type=int, choices=range(0,18), help='Quarter to analyse')
+parser.add_argument('-s', '--sourceprint', default=False, type=bool, help='Print all Gaia DR2 sources?')
 parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help='Show plots?')
 
 params = parser.parse_args()
@@ -82,6 +83,7 @@ target = SkyCoord(ra=obj_ra, dec=obj_dec, unit=(u.degree, u.degree), frame='icrs
 neighbours = Gaia.query_object_async(coordinate=target, width=u.Quantity(0.001*x, u.deg), height=u.Quantity(0.001*y, u.deg))
 ras = neighbours['ra']
 decs = neighbours['dec']
+sources = neighbours['source_id']
 
 
 ### PLOTTING ###
@@ -121,9 +123,12 @@ ax.plot([25, 55], [25, 25], '--', color='#0cb5ed')
 for i in range(len(ras)):
    coords = w.wcs_world2pix(ras[i], decs[i], 0)
    if eo == 1:
-      ax.scatter(coords[0], y - coords[1] - 1, c='k', linewidth=0.5, marker=r'$ {} $'.format(i), s=40, label=neighbours['source_id'][i])
+      ax.scatter(coords[0], y - coords[1] - 1, c='k', linewidth=0.5, marker=r'$ {} $'.format(i+1), s=40, label=sources[i])
    elif eo == 0:
-      ax.plot(x - coords[0] - 1, y - coords[1] - 1, c='k', linewidth=0.5, marker=r'$ {} $'.format(i), s=40, label=neighbours['source_id'][i])
+      ax.plot(x - coords[0] - 1, y - coords[1] - 1, c='k', linewidth=0.5, marker=r'$ {} $'.format(i+1), s=40, label=sources[i])
+
+   if params.sourceprint == True:
+      print(f'Source {i+1}: {sources[i]}')
 
 box = ax.get_position()
 ax.set_position([box.x0, box.y0, box.width*0.6, box.height])
