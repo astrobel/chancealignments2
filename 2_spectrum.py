@@ -28,7 +28,7 @@ parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help
 params = parser.parse_args()
 
 kic = params.kic
-cadence = params.cadence
+cadence = params.timecadence
 
 # read in light curve
 while True:
@@ -46,12 +46,12 @@ clipped_flux = lc[:,1]
 ofac = params.over
 hifac = params.nyq
 
-frequencies, power_spectrum = LombScargle(np.asarray(clipped_time), np.asarray(clipped_flux)).autopower(method='fast', normalization='psd', samples_per_peak=ofac, nyquist_factor=hifac)
+frequencies, power_spectrum = LombScargle(np.asarray(clipped_time), np.asarray(clipped_flux)).autopower(method='fast', normalization='psd', samples_per_peak=ofac, nyquist_factor=1)
 if cadence == 'long':
-   maxuhz = 283
+   maxcpd = 24.4598
 elif cadence == 'short':
-   maxuhz = 8493
-hifac *= (maxuhz/11.57)/max(frequencies)
+   maxcpd = 734.0535
+hifac *= maxcpd/max(frequencies)
 frequencies, power_spectrum = LombScargle(np.asarray(clipped_time), np.asarray(clipped_flux)).autopower(method='fast', normalization='psd', samples_per_peak=ofac, nyquist_factor=hifac)
 power_spectrum = power_spectrum * 4 / len(clipped_time)
 power_spectrum = np.sqrt(power_spectrum)
