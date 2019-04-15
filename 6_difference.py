@@ -6,6 +6,8 @@ from astropy import wcs
 from astropy.convolution import convolve, Box1DKernel, Gaussian1DKernel
 from astropy.utils.exceptions import AstropyWarning
 from astropy.stats import LombScargle
+from astropy.coordinates import SkyCoord
+import astropy.units as u
 from lightkurve import search_targetpixelfile, LightkurveWarning
 import smoothing
 import translate as tr
@@ -31,7 +33,9 @@ mpl.rcParams['pdf.use14corefonts'] = True
 parser = argparse.ArgumentParser(description='Perform difference imaging on target.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
 parser.add_argument('-q', '--quarter', required=True, type=int, choices=range(0,18), help='Quarter to analyse')
+parser.add_argument('-t', '--timecadence', default='long', choices=['long', 'short'], type=str, help='Cadence of data to use')
 parser.add_argument('-f', '--foldfreq', dest='fold', default=None, type=float, help='Frequency for phase folding in microHertz')
+parser.add_argument('-u', '--unitscpd', dest='cpd', default=False, type=bool, help='Use cycles per day instead of microhertz?')
 parser.add_argument('-o', '--oversampling', dest='over', default=5, type=int, help='LSP oversampling factor')
 parser.add_argument('-n', '--nyquistfactor', dest='nyq', default=1, type=float, help='LSP Nyquist factor')
 parser.add_argument('-r', '--refpix', default=False, type=bool, help='Plot location of reference pixel on image?')
@@ -41,9 +45,10 @@ params = parser.parse_args()
 
 q = params.quarter
 kic = params.kic
+cadence = params.timecadence
 
 while True:
-   tpf = search_targetpixelfile(kic, quarter=q).download()
+   tpf = search_targetpixelfile(kic, quarter=q, cadence=cadence).download()
    if tpf == None:
       print('No data for this quarter.')
       sys.exit()
@@ -78,7 +83,7 @@ fluxnew, timenew = nc.nancleaner3d(flux1, time1)
 avgflux = np.nanmean(fluxnew, axis=0)
 
 # read in light curve
-lc = np.loadtxt(f'kic{kic}_lc.dat')
+lc = np.loadtxt(f'kic{kic}_lc_{cadence}.dat')
 times = lc[:,0]
 ampls = lc[:,1]
 
@@ -88,7 +93,11 @@ if params.fold == None:
    hifac = params.nyq
    
    frequencies, power_spectrum = LombScargle(np.asarray(times), np.asarray(ampls)).autopower(method='fast', normalization='psd', samples_per_peak=ofac, nyquist_factor=hifac)
-   hifac *= (283/11.57)/max(frequencies)
+   if cadence == 'long':
+      maxuhz = 283
+   elif cadence == 'short':
+      maxuhz = 8493
+   hifac *= (maxuhz/11.57)/max(frequencies)
    frequencies, power_spectrum = LombScargle(np.asarray(times), np.asarray(ampls)).autopower(method='fast', normalization='psd', samples_per_peak=ofac, nyquist_factor=hifac)
    power_spectrum = power_spectrum * 4 / len(times)
    power_spectrum = np.sqrt(power_spectrum)
@@ -98,7 +107,10 @@ if params.fold == None:
    foldfreq = frequencies[power_spectrum.argmax()]
 
 else:
-   foldfreq = params.fold
+   if params.cpd == False:
+      foldfreq = params.fold
+   elif params.cpd == True:
+      foldfreq = params.fold * 11.57
 
 tohz = foldfreq * 1e-6
 tos = 1/tohz
@@ -238,7 +250,7 @@ avgimg.plot([25, 25], [25, 55], '-', color='#0cb5ed')
 avgimg.plot([25, 55], [25, 25], '--', color='#0cb5ed')
 
 right = diffimg.imshow(imgflux, cmap='YlOrRd')
-diffimg.set_title('Difference')
+diffimg.set_title(f'Difference: {foldper:.2}d')
 right.set_interpolation('nearest')
 diffimg.set_xlim(-0.5, x-0.5)
 diffimg.set_ylim(y-0.5, -0.5)
@@ -250,15 +262,15 @@ right.axes.get_yaxis().set_ticks([])
 
 if params.refpix == True:
    if eo == 1:
-      diffimg.plot(refx, y - refy - 1, '*', color='#0cb5ed', ms=10)
-      avgimg.plot(refx, y - refy - 1, '*', color='#0cb5ed', ms=10)
+      diffimg.plot((x - refx) - 0.5, (y - refy) - 0.5, '*', color='#0cb5ed', ms=10)
+      avgimg.plot((x - refx) - 0.5, (y - refy) - 0.5, '*', color='#0cb5ed', ms=10)
    elif eo == 0:
-      diffimg.plot(x - refx - 1, y - refy - 1, '*', color='#0cb5ed', ms=10)
-      avgimg.plot(x - refx - 1, y - refy - 1, '*', color='#0cb5ed', ms=10)
+      diffimg.plot(refx - 1.5, (y - refy) - 0.5, '*', color='#0cb5ed', ms=10)
+      avgimg.plot(refx - 1.5, (y - refy) - 0.5, '*', color='#0cb5ed', ms=10)
 
 plt.tight_layout()
 fig.set_size_inches(7.5, 4.5)
-plt.savefig(f'kic{kic}q{q}imgs.png')
+plt.savefig(f'kic{kic}q{q}_{cadence}_d{foldper:.2}diff.png')
 
 if params.show == True:
    plt.show()
