@@ -68,6 +68,8 @@ Arguments:
 
 Plots a side-by-side comparison of pixel image for one quarter and a 1' UKIRT image of the same area, the latter of which must be downloaded by the user. Code will exit if there is no data for chosen quarter.
 
+There is no short cadence support for this script, as no cadence-dependent analysis is performed, and long cadence data has better quarter coverage.
+
 Arguments:
 * `-k --kic`: KIC ID, required, takes integer
 * `-q --quarter`: Quarter to analyse, required, takes integer between 0 and 17
@@ -93,6 +95,8 @@ Arguments:
 ### 7_regionmap.py - NEW!
 
 Maps Gaia DR2 sources to a given quarter's TPF postage stamp, and lists sources for easy identification. Code will exit if there is no data for chosen quarter.
+
+There is no short cadence support for this script, as no cadence-dependent analysis is performed, and long cadence data has better quarter coverage.
 
 Arguments:
 * `-k --kic`: KIC ID, required, takes integer
