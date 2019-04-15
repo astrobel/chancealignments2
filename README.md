@@ -86,6 +86,7 @@ This code uses only time series data which falls within 5% (`tolerance` variable
 Arguments:
 * `-k --kic`: KIC ID, required, takes integer
 * `-q --quarter`: Quarter to analyse, required, takes integer between 0 and 17
+* `-t --timecadence`: Cadence of data to use, default 'long', takes either 'long' or 'short'
 * `-f --foldfreq`: Frequency for phase folding, in &mu;Hertz, default None runs code on highest-amplitude frequency, takes float
 * `-o --oversampling`: LSP oversampling factor, default 5, takes integer
 * `-n --nyquistfactor`: LSP Nyquist factor, default 1, takes float
