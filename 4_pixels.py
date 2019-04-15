@@ -11,7 +11,7 @@ from matplotlib.backends.backend_pdf import PdfPages as pdf
 import argparse, warnings, sys
 
 warnings.simplefilter('ignore', category=UserWarning) # for font conflicts on my system, at least
-warnings.simplefilter('ignore', category=LightkurveWarning) # if it's trying to download an empty quarter, code will quit
+# warnings.simplefilter('ignore', category=LightkurveWarning) # if it's trying to download an empty quarter, code will quit
 
 mpl.rc('text', usetex=True)
 mpl.rcParams['text.latex.preamble'] = [
@@ -27,6 +27,7 @@ mpl.rcParams['pdf.use14corefonts'] = True
 parser = argparse.ArgumentParser(description='Examine light curves and amplitude spectra of each individual pixel.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
 parser.add_argument('-q', '--quarter', required=True, type=int, choices=range(0,18), help='Quarter to analyse')
+parser.add_argument('-t', '--timecadence', dest='cadence', default='long', choices=['long', 'short'], type=str, help='Cadence of data to use')
 parser.add_argument('-s', '--smoothing', dest='kern', default=100, type=int, help='Gaussian smoothing kernel, in days')
 parser.add_argument('-c', '--clip', dest='inp', default=3, type=int, help='Outlier clipping level, in sigma')
 parser.add_argument('-o', '--oversampling', dest='over', default=5, type=int, help='LSP oversampling factor')
@@ -39,9 +40,10 @@ params = parser.parse_args()
 
 q = params.quarter
 kic = params.kic
+cadence = params.cadence
 
 while True:
-   tpf = search_targetpixelfile(kic, quarter=q).download()
+   tpf = search_targetpixelfile(kic, quarter=q, cadence=cadence).download()
    if tpf == None:
       print('No data for this quarter.')
       sys.exit()
@@ -124,7 +126,11 @@ for (j, k), img in np.ndenumerate(table2):
       hifac = params.nyq
 
       frequencies, power_spectrum = LombScargle(np.asarray(clipped_time), np.asarray(clipped_flux)).autopower(method='fast', normalization='psd', samples_per_peak=ofac, nyquist_factor=hifac)
-      hifac *= (283/11.57)/max(frequencies)
+      if params.cadence == 'long':
+         maxuhz = 283
+      elif params.cadence == 'short':
+         maxuhz = 8493
+      hifac *= (maxuhz/11.57)/max(frequencies)
       frequencies, power_spectrum = LombScargle(np.asarray(clipped_time), np.asarray(clipped_flux)).autopower(method='fast', normalization='psd', samples_per_peak=ofac, nyquist_factor=hifac)
       power_spectrum = power_spectrum * 4. / len(clipped_time)
       power_spectrum = np.sqrt(power_spectrum)
@@ -178,10 +184,10 @@ for (j, k), img in np.ndenumerate(table2):
          plt.ylim(min(flux), max(flux)) #ymin=0)
          plt.xlim(min(time), max(time))
 
-plt.savefig(f'kic{kic}q{q}pixelslc.png')
+plt.savefig(f'kic{kic}q{q}pixelslc_{cadence}.png')
 
 if params.makepdf == True:
-   outplot = pdf(f'kic{kic}_q{q}.pdf')
+   outplot = pdf(f'kic{kic}_q{q}_{cadence}.pdf')
 else:
    pass
 
@@ -227,7 +233,7 @@ for (j, k), img in np.ndenumerate(table2):
          plt.xlim(0, max(freq))
 
 # fig.set_size_inches(14,10) # for clarity, but disabled for quick look run of code
-plt.savefig(f'kic{kic}q{q}pixels.png')
+plt.savefig(f'kic{kic}q{q}pixels_{cadence}.png')
 
 if params.makepdf == True:
    # power spectra 2

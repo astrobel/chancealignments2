@@ -18,9 +18,9 @@ Prepares light curve for analysis.
 
 Arguments:
 * `-k --kic`: KIC ID, required, takes integer
-* `-c --cadence`: Cadence of data to use, default 'long', takes either 'long' or 'short'
+* `-t --timecadence`: Cadence of data to use, default 'long', takes either 'long' or 'short'
 * `-s --smoothing`: Gaussian smoothing kernel, default 100 days, takes integer
-* `-o --outlierclip`: Outlier clipping level, default 3 sigma, takes integer
+* `-c --clip`: Outlier clipping level, default 3 sigma, takes integer
 * `-p --plots`: Show plots, default False, takes bool
 
 ### 2_spectrum.py
@@ -29,7 +29,7 @@ Computes Lomb-Scargle periodogram of light curve. `1_lightcurve.py` _must_ be ru
 
 Arguments:
 * `-k --kic`: KIC ID, required, takes integer
-* `-c --cadence`: Cadence of data to download, default 'long', takes either 'long' or 'short'
+* `-t --timecadence`: Cadence of data to download, default 'long', takes either 'long' or 'short'
 * `-o --oversampling`: LSP oversampling factor, default 5, takes integer
 * `-n --nyquistfactor`: LSP Nyquist factor, default 1, takes float
 * `-u --unitscpd`: Plot cycles per day instead of default &mu;Hertz, default False, takes bool
@@ -41,7 +41,7 @@ Phases light curve on highest-amplitude frequency, or chosen frequency. `1_light
 
 Arguments:
 * `-k --kic`: KIC ID, required, takes integer
-* `-c --cadence`: Cadence of data to use, default 'long', takes either 'long' or 'short'
+* `-t --timecadence`: Cadence of data to use, default 'long', takes either 'long' or 'short'
 * `-f --foldfreq`: Frequency for phase folding, default None runs code on highest-amplitude frequency, takes float
 * `-u --unitscpd`: Specify that foldfreq is in cycles per day instead of default &mu;Hertz, default False, takes bool
 * `-o --oversampling`: LSP oversampling factor, default 5, takes integer
@@ -55,6 +55,7 @@ Examines light curves and amplitude spectra in each individual pixel for a given
 Arguments:
 * `-k --kic`: KIC ID, required, takes integer
 * `-q --quarter`: Quarter to analyse, required, takes integer between 0 and 17
+* `-t --timecadence`: Cadence of data to use, default 'long', takes either 'long' or 'short'
 * `-s --smoothing`: Gaussian smoothing kernel, default 100 days, takes integer
 * `-c --clip`: Outlier clipping level, default 3 sigma, takes integer
 * `-o --oversampling`: LSP oversampling factor, default 5, takes integer

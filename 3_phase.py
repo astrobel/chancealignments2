@@ -23,7 +23,7 @@ mpl.rcParams['pdf.use14corefonts'] = True
 
 parser = argparse.ArgumentParser(description='Phase light curve on highest-amplitude frequency, or given frequency.')
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
-parser.add_argument('-c', '--cadence', default='long', choices=['long', 'short'], type=str, help='Cadence of data to use')
+parser.add_argument('-t', '--timecadence', default='long', choices=['long', 'short'], type=str, help='Cadence of data to use')
 parser.add_argument('-f', '--foldfreq', dest='fold', default=None, type=float, help='Frequency for phase folding in microHertz or cycles per day (use -u True)')
 parser.add_argument('-u', '--unitscpd', dest='cpd', default=False, type=bool, help='Use cycles per day instead of microhertz?')
 parser.add_argument('-o', '--oversampling', dest='over', default=5, type=int, help='LSP oversampling factor')
