@@ -95,7 +95,7 @@ Arguments:
 
 ### 7_regionmap.py - NEW!
 
-Maps Gaia DR2 sources to a given quarter's TPF postage stamp, and lists sources for easy identification. Code will exit if there is no data for chosen quarter.
+Maps Gaia DR2 sources to a given quarter's TPF postage stamp, plotting magnitudes with the option to list sources for easy identification. Code will exit if there is no data for chosen quarter.
 
 There is no short cadence support for this script, as no cadence-dependent analysis is performed, and long cadence data has better quarter coverage.
 

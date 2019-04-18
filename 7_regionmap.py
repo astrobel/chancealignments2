@@ -10,7 +10,7 @@ import astropy.units as u
 from astroquery.gaia import Gaia
 from lightkurve import search_targetpixelfile, LightkurveWarning
 import nancleaner as nc
-import argparse, warnings, sys
+import argparse, warnings
 
 warnings.simplefilter('ignore', category=AstropyWarning)
 warnings.simplefilter('ignore', category=UserWarning) # for font conflicts on my system, at least
@@ -84,6 +84,7 @@ neighbours = Gaia.query_object_async(coordinate=target, width=u.Quantity(0.001*x
 ras = neighbours['ra']
 decs = neighbours['dec']
 sources = neighbours['source_id']
+mags = neighbours['phot_g_mean_mag']
 
 
 ### PLOTTING ###
@@ -123,16 +124,16 @@ ax.plot([25, 55], [25, 25], '--', color='#0cb5ed')
 for i in range(len(ras)):
    coords = w.wcs_world2pix(ras[i], decs[i], 0)
    if eo == 1:
-      ax.scatter(coords[0], y - coords[1] - 1, c='k', linewidth=0.5, marker=r'$ {} $'.format(i+1), s=40, label=sources[i])
+      ax.scatter(coords[0], y - coords[1] - 1, c='k', linewidth=0.5, marker=r'$ {:.2f} $'.format(mags[i]), s=300, label=mags[i])
    elif eo == 0:
-      ax.plot(x - coords[0] - 1, y - coords[1] - 1, c='k', linewidth=0.5, marker=r'$ {} $'.format(i+1), s=40, label=sources[i])
+      ax.scatter(x - coords[0] - 1, y - coords[1] - 1, c='k', linewidth=0.5, marker=r'$ {:.2f} $'.format(mags[i]), s=300, label=mags[i])
 
    if params.sourceprint == True:
-      print(f'Source {i+1}: {sources[i]}')
+      print(f'Source mag {mags[i]:.2f}: {sources[i]}')
 
-box = ax.get_position()
-ax.set_position([box.x0, box.y0, box.width*0.6, box.height])
-ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+# box = ax.get_position()
+# ax.set_position([box.x0, box.y0, box.width*0.6, box.height])
+# ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
 plt.savefig(f'kic{kic}q{q}map.png')
 
