@@ -32,7 +32,7 @@ parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help
 params = parser.parse_args()
 
 kic = params.kic
-cadence = params.cadence
+cadence = params.timecadence
 
 time = np.zeros(0)
 sap_flux = np.zeros(0)
