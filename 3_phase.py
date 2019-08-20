@@ -33,7 +33,7 @@ parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help
 params = parser.parse_args()
 
 kic = params.kic
-cadence = params.cadence
+cadence = params.timecadence
 
 # read in light curve
 while True:
