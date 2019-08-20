@@ -26,7 +26,7 @@ parser = argparse.ArgumentParser(description='Prepare long cadence light curve f
 parser.add_argument('-k', '--kic', required=True, type=int, help='KIC ID')
 parser.add_argument('-t', '--timecadence', default='long', choices=['long', 'short'], type=str, help='Cadence of data to download')
 parser.add_argument('-s', '--smoothing', dest='kern', default=100, type=int, help='Gaussian smoothing kernel, in days')
-parser.add_argument('-c', '--clip', dest='inp', default=3, type=int, help='Outlier clipping level, in sigma')
+parser.add_argument('-c', '--clip', dest='inp', default=3, type=float, help='Outlier clipping level, in sigma')
 parser.add_argument('-p', '--plots', dest='show', default=False, type=bool, help='Show plots?')
 
 params = parser.parse_args()
