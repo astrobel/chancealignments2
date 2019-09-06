@@ -48,7 +48,7 @@ kic = params.kic
 cadence = params.timecadence
 
 while True:
-   tpf = search_targetpixelfile(kic, quarter=q, cadence=cadence).download()
+   tpf = search_targetpixelfile(f'KIC {kic}', quarter=q, cadence=cadence).download()
    if tpf == None:
       print('No data for this quarter.')
       sys.exit()

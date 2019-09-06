@@ -39,7 +39,7 @@ sap_flux = np.zeros(0)
 
 for q in np.arange(0,18):
 
-   lc = search_lightcurvefile(kic, quarter=q, cadence=cadence).download()
+   lc = search_lightcurvefile(f'KIC {kic}', quarter=q, cadence=cadence).download()
    
    if lc != None:
       table = lc.hdu[1].data

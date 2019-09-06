@@ -34,7 +34,7 @@ kic = params.kic
 ### IMAGE 1: ONE KEPLER PIXEL IMAGE, Q_ ###
 
 while True:
-   tpf = search_targetpixelfile(kic, quarter=q).download()
+   tpf = search_targetpixelfile(f'KIC {kic}', quarter=q).download()
    if tpf == None:
       print('No data for this quarter.')
       sys.exit()

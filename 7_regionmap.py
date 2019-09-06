@@ -40,7 +40,7 @@ q = params.quarter
 kic = params.kic
 
 while True:
-   tpf = search_targetpixelfile(kic, quarter=q).download()
+   tpf = search_targetpixelfile(f'KIC {kic}', quarter=q).download()
    if tpf == None:
       print('No data for this quarter.')
       sys.exit()
