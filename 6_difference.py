@@ -204,10 +204,9 @@ fluxlow1 = np.delete(fluxlow, lownans, axis=0)
 fluxdiff = np.abs(np.nanmean(fluxhigh1, axis=0) - np.nanmean(fluxlow1, axis=0))
 
 imgflux = np.flipud(fluxdiff)
-if eo == 0:
-   imgflux = np.fliplr(imgflux)
 avgflux = np.flipud(avgflux)
 if eo == 0:
+   imgflux = np.fliplr(imgflux)
    avgflux = np.fliplr(avgflux)
 
 
@@ -245,9 +244,6 @@ left.axes.get_xaxis().set_ticklabels([])
 left.axes.get_yaxis().set_ticklabels([])
 left.axes.get_xaxis().set_ticks([])
 left.axes.get_yaxis().set_ticks([])
-
-avgimg.plot([25, 25], [25, 55], '-', color='#0cb5ed')
-avgimg.plot([25, 55], [25, 25], '--', color='#0cb5ed')
 
 right = diffimg.imshow(imgflux, cmap='YlOrRd')
 diffimg.set_title(f'Difference: {foldper:.2}d')
