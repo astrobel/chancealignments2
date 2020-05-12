@@ -1,5 +1,5 @@
 import numpy as np
-from astropy.stats import LombScargle
+from astropy.timeseries import LombScargle
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import argparse, warnings, sys

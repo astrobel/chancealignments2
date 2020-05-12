@@ -1,6 +1,6 @@
 import numpy as np
 from astropy.convolution import convolve, Box1DKernel, Gaussian1DKernel
-from astropy.stats import LombScargle
+from astropy.timeseries import LombScargle
 import smoothing 
 import matplotlib.gridspec as gridspec
 import matplotlib as mpl

@@ -5,7 +5,7 @@ import matplotlib as mpl
 from astropy import wcs
 from astropy.convolution import convolve, Box1DKernel, Gaussian1DKernel
 from astropy.utils.exceptions import AstropyWarning
-from astropy.stats import LombScargle
+from astropy.timeseries import LombScargle
 from astropy.coordinates import SkyCoord
 import astropy.units as u
 from lightkurve import search_targetpixelfile, LightkurveWarning
